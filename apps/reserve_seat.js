@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { defaults } from 'request-promise';
 import { Builder, By, Key, until } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/chrome';
+import { Options } from 'selenium-webdriver';
 
 
 //导出  类  类名===文件名 继承  插件类  
