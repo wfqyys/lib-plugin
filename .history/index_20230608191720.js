@@ -32,7 +32,7 @@ for (let i in files) {
 await createServer()
 logger.info('**************************************')
 logger.info('lib-plugin加载成功')
-logger.info(`当前版本${config.version}`)
+logger.info(`当前版本${Config.version}`)
 logger.info('仓库地址 https://github.com/wfqyys/lib-plugin')
 logger.info('插件作者--YYS')
 logger.info('**************************************')
