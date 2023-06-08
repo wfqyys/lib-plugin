@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { defaults } from 'request-promise';
 import { Builder, By, Key, until } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/chrome';
+// import { Options } from 'selenium-webdriver/chrome';
 
 
 //导出  类  类名===文件名 继承  插件类  
@@ -66,14 +66,14 @@ export class Reserve extends plugin {
   }
   
   // 创建浏览器对象并打开目标网站
-  async startDriver(url) {
-    console.log('打开登录界面...');
-    const options = new Options();
-    options.addArguments('--headless'); // 无界面模式
-    const driver = new Builder().forBrowser('chrome').setChromeOptions(options).build();
-    await driver.get(url);
-    return driver;
-  }
+  // async startDriver(url) {
+  //   console.log('打开登录界面...');
+  //   const options = new Options();
+  //   options.addArguments('--headless'); // 无界面模式
+  //   const driver = new Builder().forBrowser('chrome').setChromeOptions(options).build();
+  //   await driver.get(url);
+  //   return driver;
+  // }
   
   // 找到账号和密码的输入框，输入账号、密码并提交
   async  inputAccount(driver, users) {
