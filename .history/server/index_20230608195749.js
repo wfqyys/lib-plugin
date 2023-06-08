@@ -9,7 +9,7 @@ import os from 'os'
 import schedule from 'node-schedule'
 
 import { Config } from '../utils/config.js'
-// import { randomString, getPublicIP, getUserData } from '../utils/common.js'
+import { randomString, getPublicIP, getUserData } from '../utils/common.js'
 
 const __dirname = path.resolve()
 const server = fastify({
