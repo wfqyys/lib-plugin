@@ -1,5 +1,5 @@
 // 导入所需库和模块
-import plugin from '../../../../../lib/plugins/plugin.js'
+import plugin from '../../../lib/plugins/plugin.js'
 import{ rulePrefix } from '../utils/common.js'
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
@@ -30,11 +30,11 @@ export class Reserve extends plugin {
  //函数
  
  async reserve(e) {
+  e.reply("请发送房间与位置")
   // 主程序入口
   const login_url = 'https://cas.yangtzeu.edu.cn/authserver/login?service=https%3A%2F%2Fseat.yangtzeu.edu.cn%2Fremote%2Fstatic%2FcasAuth%2FgetServiceByVerifyTicket%2FcasLogin';
   main();
   setInterval(main, 300000); // 每5分钟执行一次
-  e.reply("请设置房间与位置")
   //阻止消息不再往下
   return;
   };  

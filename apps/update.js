@@ -34,6 +34,10 @@ export class Update extends plugin {
         {
           reg: `^${rulePrefix}(插件)?(强制)?更新$`,
           fnc: 'update'
+        },
+        {
+          reg: `^${rulePrefix}(插件)?更新日志$`,
+          fnc: 'updateLog'
         }
       ]
     })
@@ -310,5 +314,12 @@ export class Update extends plugin {
       return false
     }
     return true
+  }
+  /*
+   *更新日志的方法
+   */
+   async updateLog () {
+    let log = await this.getLog()
+    await this.reply(log)
   }
 }
