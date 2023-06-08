@@ -1,6 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js'
 import { exec, execSync } from 'child_process'
 import { checkPnpm } from '../utils/common.js'
+import { rulePrefix } from "../utils/common.js";
 
 export class StarRailManagement extends plugin {
   constructor (e) {
@@ -39,7 +40,7 @@ export class StarRailManagement extends plugin {
 
     let logAll
     try {
-      logAll = await execSync(cm, { encoding: 'utf-8', windowsHide: true })
+      logAll = execSync(cm, { encoding: 'utf-8', windowsHide: true })
     } catch (error) {
       logger.error(error.toString())
       this.reply(error.toString())
