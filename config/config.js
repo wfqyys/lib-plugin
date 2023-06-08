@@ -1,7 +1,7 @@
 import fs from 'fs'
 import lodash from 'lodash'
-export const defaultChatGPTAPI = 'https://pimon.d201.cn/backend-api/conversation'
-export const officialChatGPTAPI = 'https://pimon.d201.cn/backend-api/conversation'
+export const defaultlibAPI = 'https://pimon.d201.cn/backend-api/conversation'
+export const officiallibAPI = 'https://pimon.d201.cn/backend-api/conversation'
 // Reverse proxy of https://api.openai.com
 export const defaultOpenAIReverseProxy = 'https://mondstadt.d201.eu.org/v1'
 // blocked in China Mainland
@@ -42,14 +42,14 @@ const defaultConfig = {
   sydneyMood: false,
   sydneyMoodTip: 'Your response should be divided into two parts, namely, the text and your mood. The mood available to you can only include: blandness, happy, shy, frustrated, disgusted, and frightened.All content should be replied in this format {"text": "", "mood": ""}.All content except mood should be placed in text, It is important to ensure that the content you reply to can be parsed by json.',
   enableSuggestedResponses: false,
-  api: defaultChatGPTAPI,
+  api: defaultlibAPI,
   apiBaseUrl: 'https://pimon.d201.cn/backend-api',
   apiForceUseReverse: false,
   plus: false,
   useGPT4: false,
   xinghuoToken: '',
   promptPrefixOverride: 'Your answer shouldn\'t be too verbose. Prefer to answer in Chinese.',
-  assistantLabel: 'ChatGPT',
+  assistantLabel: 'lib',
   // thinkingTips: true,
   username: '',
   password: '',
@@ -128,49 +128,49 @@ const defaultConfig = {
 }
 const _path = process.cwd()
 let config = {}
-if (fs.existsSync(`${_path}/plugins/chatgpt-plugin/config/config.json`)) {
-  const fullPath = fs.realpathSync(`${_path}/plugins/chatgpt-plugin/config/config.json`)
+if (fs.existsSync(`${_path}/plugins/lib-plugin/config/config.json`)) {
+  const fullPath = fs.realpathSync(`${_path}/plugins/lib-plugin/config/config.json`)
   const data = fs.readFileSync(fullPath)
   if (data) {
     try {
       config = JSON.parse(data)
     } catch (e) {
-      logger.error('chatgpt插件读取配置文件出错，请检查config/config.json格式，将忽略用户配置转为使用默认配置', e)
-      logger.warn('chatgpt插件即将使用默认配置')
+      logger.error('lib插件读取配置文件出错，请检查config/config.json格式，将忽略用户配置转为使用默认配置', e)
+      logger.warn('lib插件即将使用默认配置')
     }
   }
-} else if (fs.existsSync(`${_path}/plugins/chatgpt-plugin/config/config.js`)) {
+} else if (fs.existsSync(`${_path}/plugins/lib-plugin/config/config.js`)) {
   // 旧版本的config.js，读取其内容，生成config.json，然后删掉config.js
-  const fullPath = fs.realpathSync(`${_path}/plugins/chatgpt-plugin/config/config.js`)
+  const fullPath = fs.realpathSync(`${_path}/plugins/lib-plugin/config/config.js`)
   config = (await import(`file://${fullPath}`)).default
   try {
-    logger.warn('[ChatGPT-Plugin]发现旧版本config.js文件，正在读取其内容并转换为新版本config.json文件')
+    logger.warn('[lib-Plugin]发现旧版本config.js文件，正在读取其内容并转换为新版本config.json文件')
     // 读取其内容，生成config.json
-    fs.writeFileSync(`${_path}/plugins/chatgpt-plugin/config/config.json`, JSON.stringify(config, null, 2))
+    fs.writeFileSync(`${_path}/plugins/lib-plugin/config/config.json`, JSON.stringify(config, null, 2))
     // 删掉config.js
-    fs.unlinkSync(`${_path}/plugins/chatgpt-plugin/config/config.js`)
-    logger.info('[ChatGPT-Plugin]配置文件转换处理完成')
+    fs.unlinkSync(`${_path}/plugins/lib-plugin/config/config.js`)
+    logger.info('[lib-Plugin]配置文件转换处理完成')
   } catch (err) {
-    logger.error('[ChatGPT-Plugin]转换旧版配置文件失败，建议手动清理旧版config.js文件，并转为使用新版config.json格式', err)
+    logger.error('[lib-Plugin]转换旧版配置文件失败，建议手动清理旧版config.js文件，并转为使用新版config.json格式', err)
   }
-} else if (fs.existsSync(`${_path}/plugins/chatgpt-plugin/config/index.js`)) {
+} else if (fs.existsSync(`${_path}/plugins/lib-plugin/config/index.js`)) {
   // 兼容旧版本
-  const fullPath = fs.realpathSync(`${_path}/plugins/chatgpt-plugin/config/index.js`)
+  const fullPath = fs.realpathSync(`${_path}/plugins/lib-plugin/config/index.js`)
   config = (await import(`file://${fullPath}`)).Config
   try {
-    logger.warn('[ChatGPT-Plugin]发现旧版本config.js文件，正在读取其内容并转换为新版本config.json文件')
+    logger.warn('[lib-Plugin]发现旧版本config.js文件，正在读取其内容并转换为新版本config.json文件')
     // 读取其内容，生成config.json
-    fs.writeFileSync(`${_path}/plugins/chatgpt-plugin/config/config.json`, JSON.stringify(config, null, 2))
+    fs.writeFileSync(`${_path}/plugins/lib-plugin/config/config.json`, JSON.stringify(config, null, 2))
     // index.js
-    fs.unlinkSync(`${_path}/plugins/chatgpt-plugin/config/index.js`)
-    logger.info('[ChatGPT-Plugin]配置文件转换处理完成')
+    fs.unlinkSync(`${_path}/plugins/lib-plugin/config/index.js`)
+    logger.info('[lib-Plugin]配置文件转换处理完成')
   } catch (err) {
-    logger.error('[ChatGPT-Plugin]转换旧版配置文件失败，建议手动清理旧版index.js文件，并转为使用新版config.json格式', err)
+    logger.error('[lib-Plugin]转换旧版配置文件失败，建议手动清理旧版index.js文件，并转为使用新版config.json格式', err)
   }
 }
 config = Object.assign({}, defaultConfig, config)
 config.version = defaultConfig.version
-// const latestTag = execSync(`cd ${_path}/plugins/chatgpt-plugin && git describe --tags --abbrev=0`).toString().trim()
+// const latestTag = execSync(`cd ${_path}/plugins/lib-plugin && git describe --tags --abbrev=0`).toString().trim()
 // config.version = latestTag
 
 export const Config = new Proxy(config, {
@@ -182,7 +182,7 @@ export const Config = new Proxy(config, {
       }
     })
     try {
-      fs.writeFileSync(`${_path}/plugins/chatgpt-plugin/config/config.json`, JSON.stringify(change, null, 2), { flag: 'w' })
+      fs.writeFileSync(`${_path}/plugins/lib-plugin/config/config.json`, JSON.stringify(change, null, 2), { flag: 'w' })
     } catch (err) {
       logger.error(err)
       return false

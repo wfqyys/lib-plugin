@@ -8,7 +8,7 @@ import path from 'path'
 import os from 'os'
 import schedule from 'node-schedule'
 
-import { Config } from '../utils/config.js'
+import { Config } from '../config/config.js'
 // import { randomString, getPublicIP, getUserData } from '../utils/common.js'
 
 const __dirname = path.resolve()
