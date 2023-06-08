@@ -1,0 +1,1 @@
+export const rulePrefix = '((#|\\*)?(位置|座位|图书馆|lib)|\\*|＊)'
