@@ -1,4 +1,5 @@
 // 导入所需库和模块
+//引入Yunzai插件功能
 import plugin from '../../../lib/plugins/plugin.js'
 import{ rulePrefix } from '../utils/common.js'
 import { readFileSync, writeFileSync } from 'fs';
@@ -16,7 +17,7 @@ export class Reserve extends plugin {
           name: 'lib-plugin',//插件名字，可以随便写
           dsc: 'plugin',//插件介绍，可以随便写
           event: 'message',//这个直接复制即可，别乱改
-          priority: 250,//执行优先级：数值越低越6
+          priority: 2500,//执行优先级：数值越低越6
           rule: [
               {
                   //正则表达试
@@ -32,9 +33,9 @@ export class Reserve extends plugin {
  async reserve(e) {
   e.reply("请发送房间与位置")
   // 主程序入口
-  const login_url = 'https://cas.yangtzeu.edu.cn/authserver/login?service=https%3A%2F%2Fseat.yangtzeu.edu.cn%2Fremote%2Fstatic%2FcasAuth%2FgetServiceByVerifyTicket%2FcasLogin';
-  main();
-  setInterval(main, 300000); // 每5分钟执行一次
+  // const login_url = 'https://cas.yangtzeu.edu.cn/authserver/login?service=https%3A%2F%2Fseat.yangtzeu.edu.cn%2Fremote%2Fstatic%2FcasAuth%2FgetServiceByVerifyTicket%2FcasLogin';
+  // main();
+  // setInterval(main, 300000); // 每5分钟执行一次
   //阻止消息不再往下
   return;
   };  

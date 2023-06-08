@@ -35,10 +35,6 @@ export class Update extends plugin {
           reg: `^${rulePrefix}(插件)?(强制)?更新$`,
           fnc: 'update'
         },
-        {
-          reg: `^${rulePrefix}(插件)?更新日志$`,
-          fnc: 'updateLog'
-        }
       ]
     })
   }
@@ -282,7 +278,7 @@ export class Update extends plugin {
         msg + '存在冲突\n',
         errMsg,
         stdout,
-        '\n请解决冲突后再更新，或者执行#强制更新，放弃本地修改'
+        '\n请解决冲突后再更新，或者执行#lib强制更新，放弃本地修改'
       ])
       return
     }
@@ -315,11 +311,5 @@ export class Update extends plugin {
     }
     return true
   }
-  /*
-   *更新日志的方法
-   */
-   async updateLog () {
-    let log = await this.getLog()
-    await this.reply(log)
-  }
+  
 }
