@@ -125,3 +125,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.history/server/index_20230608194000.js

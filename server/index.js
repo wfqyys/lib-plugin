@@ -8,12 +8,12 @@ import path from 'path'
 import os from 'os'
 import schedule from 'node-schedule'
 
-import { Config } from '../config/config.js'
+import { config } from '../config/config.js'
 // import { randomString, getPublicIP, getUserData } from '../utils/common.js'
 
 const __dirname = path.resolve()
 const server = fastify({
-  logger: Config.debug
+  logger: config.debug
 })
 
 let usertoken = []
@@ -197,27 +197,27 @@ export async function createServer() {
         fs.mkdirSync(dir, { recursive: true })
         const data = {
           user: body.content.senderName,
-          bot: Config.chatViewBotName || botName,
+          bot: config.chatViewBotName || botName,
           userImg: body.userImg || '',
           botImg: body.botImg || '',
           question: body.content.prompt,
           message: body.content.content,
           group: body.content.group,
-          herf: `http://${body.cacheHost || (ip + ':' + Config.serverPort || 3321)}/page/${body.entry}`,
+          herf: `http://${body.cacheHost || (ip + ':' + config.serverPort || 3321)}/page/${body.entry}`,
           quote: body.content.quote,
           images: body.content.images || [],
           suggest: body.content.suggest || [],
           model: body.model,
           mood: body.content.mood || 'blandness',
-          live2d: Config.live2d,
-          live2dModel: Config.live2dModel,
+          live2d: config.live2d,
+          live2dModel: config.live2dModel,
           live2dOption: {
-            scale: Config.live2dOption_scale,
+            scale: config.live2dOption_scale,
             position: {
-              x: Config.live2dOption_positionX,
-              y: Config.live2dOption_positionY
+              x: config.live2dOption_positionX,
+              y: config.live2dOption_positionY
             },
-            rotation :Config.live2dOption_rotation,
+            rotation :config.live2dOption_rotation,
           },
           time: new Date()
         }
@@ -233,10 +233,10 @@ export async function createServer() {
         })
         await setUserData(body.qq, user)
         Statistics.CacheFile.count += 1
-        reply.send({ file: body.entry, cacheUrl: `http://${ip}:${Config.serverPort || 3321}/page/${body.entry}` })
+        reply.send({ file: body.entry, cacheUrl: `http://${ip}:${config.serverPort || 3321}/page/${body.entry}` })
       } catch (err) {
         server.log.error(`用户生成缓存${body.entry}时发生错误： ${err}`)
-        reply.send({ file: body.entry, cacheUrl: `http://${ip}:${Config.serverPort || 3321}/page/${body.entry}`, error: body.entry + '生成失败' })
+        reply.send({ file: body.entry, cacheUrl: `http://${ip}:${config.serverPort || 3321}/page/${body.entry}`, error: body.entry + '生成失败' })
       }
     }
   })
@@ -288,31 +288,31 @@ export async function createServer() {
     if (!user) {
       reply.send({ err: '未登录' })
     } else if (user.autho === 'admin') {
-      let redisConfig = {}
+      let redisconfig = {}
       if (await redis.exists('CHATGPT:BING_TOKENS') != 0) {
         let bingTokens = await redis.get('CHATGPT:BING_TOKENS')
         if (bingTokens) { bingTokens = JSON.parse(bingTokens) } else bingTokens = []
-        redisConfig.bingTokens = bingTokens
+        redisconfig.bingTokens = bingTokens
       } else {
-        redisConfig.bingTokens = []
+        redisconfig.bingTokens = []
       }
       if (await redis.exists('CHATGPT:CONFIRM') != 0) {
-        redisConfig.turnConfirm = await redis.get('CHATGPT:CONFIRM') === 'on'
+        redisconfig.turnConfirm = await redis.get('CHATGPT:CONFIRM') === 'on'
       }
       if (await redis.exists('CHATGPT:USE') != 0) {
-        redisConfig.useMode = await redis.get('CHATGPT:USE')
+        redisconfig.useMode = await redis.get('CHATGPT:USE')
       }
       reply.send({
-        chatConfig: Config,
-        redisConfig
+        chatconfig: config,
+        redisconfig
       })
     } else {
       let userSetting = await redis.get(`CHATGPT:USER:${user.user}`)
       if (!userSetting) {
         userSetting = {
-          usePicture: Config.defaultUsePicture,
-          useTTS: Config.defaultUseTTS,
-          ttsRole: Config.defaultTTSRole
+          usePicture: config.defaultUsePicture,
+          useTTS: config.defaultUseTTS,
+          ttsRole: config.defaultTTSRole
         }
       } else {
         userSetting = JSON.parse(userSetting)
@@ -331,10 +331,10 @@ export async function createServer() {
     if (!user) {
       reply.send({ err: '未登录' })
     } else if (user.autho === 'admin') {
-      const chatdata = body.chatConfig || {}
+      const chatdata = body.chatconfig || {}
       for (let [keyPath, value] of Object.entries(chatdata)) {
         if (keyPath === 'blockWords' || keyPath === 'promptBlockWords' || keyPath === 'initiativeChatGroups') { value = value.toString().split(/[,，;；\|]/) }
-        if (Config[keyPath] != value) {
+        if (config[keyPath] != value) {
           //检查云服务api
           if(keyPath === 'cloudTranscode') {
             const referer = request.headers.referer;
@@ -356,30 +356,30 @@ export async function createServer() {
               }
             } else value = ''
           }
-          Config[keyPath] = value 
+          config[keyPath] = value 
         }
       }
-      const redisConfig = body.redisConfig || {}
-      if (redisConfig.bingTokens != null) {
-        await redis.set('CHATGPT:BING_TOKENS', JSON.stringify(redisConfig.bingTokens))
+      const redisconfig = body.redisconfig || {}
+      if (redisconfig.bingTokens != null) {
+        await redis.set('CHATGPT:BING_TOKENS', JSON.stringify(redisconfig.bingTokens))
       }
-      if (redisConfig.turnConfirm != null) {
-        await redis.set('CHATGPT:CONFIRM', redisConfig.turnConfirm ? 'on' : 'off')
+      if (redisconfig.turnConfirm != null) {
+        await redis.set('CHATGPT:CONFIRM', redisconfig.turnConfirm ? 'on' : 'off')
       }
-      if (redisConfig.useMode != null) {
-        await redis.set('CHATGPT:USE', redisConfig.useMode)
+      if (redisconfig.useMode != null) {
+        await redis.set('CHATGPT:USE', redisconfig.useMode)
       }
     } else {
       if (body.userSetting) {
         await redis.set(`CHATGPT:USER:${user.user}`, JSON.stringify(body.userSetting))
       }
-      if (body.userConfig) {
+      if (body.userconfig) {
         let temp_userData = await getUserData(user.user)
-        if (body.userConfig.mode) {
-          temp_userData.mode = body.userConfig.mode
+        if (body.userconfig.mode) {
+          temp_userData.mode = body.userconfig.mode
         }
-        if (body.userConfig.cast) {
-          temp_userData.cast = body.userConfig.cast
+        if (body.userconfig.cast) {
+          temp_userData.cast = body.userconfig.cast
         }
         await setUserData(user.user, temp_userData)
       }
@@ -409,7 +409,7 @@ export async function createServer() {
   })
 
   server.listen({
-    port: Config.serverPort || 3321,
+    port: config.serverPort || 3321,
     host: '::'
   }, (error) => {
     if (error) {
