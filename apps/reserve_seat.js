@@ -24,7 +24,13 @@ export class Reserve extends plugin {
                   reg: `^${rulePrefix}(预约|预定)$`,
                   //函数
                   fnc: 'reserve'
-              }
+              },
+{
+//正则
+                  reg: `^${rulePrefix}(登录|登陆)$`,
+                  //函数
+                  fnc: 'login'
+}
           ]
       });
   };
@@ -39,7 +45,12 @@ export class Reserve extends plugin {
   //阻止消息不再往下
   return;
   };  
-
+async login(e){
+    if (!this.e.isMaster) return false 
+     if (this.e.isGroup) { 
+       this.e.reply('请私聊使用~') 
+       return true
+}
 
 
   // async getData() {
