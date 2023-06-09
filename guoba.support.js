@@ -42,7 +42,7 @@ export function supportGuoba () {
       },
       
       {
-        field: 'gccfg.recall.disable_group',
+        field: 'Help.recall.disable_group',
         label: '禁用群号',
         bottomHelpMessage: '禁用选座功能的群',
         component: 'Select',
