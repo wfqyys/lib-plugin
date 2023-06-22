@@ -1,6 +1,0 @@
-# 渲染精度
-renderScale: 100
-# 抽卡链接是否允许群聊
-gatchaUrlGroup: true
-disable_group: # 禁用群号
-  - 1234567892
